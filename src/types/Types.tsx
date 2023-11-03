@@ -15,3 +15,8 @@ export type Data = {
     discount: number;
     total: number;
 }
+
+export type selectOptions = {
+    value: number;
+    label: string;
+}

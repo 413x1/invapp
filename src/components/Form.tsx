@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Data, Employee } from "../types/Types";
+import { Data, Employee, selectOptions } from "../types/Types";
+import Select from 'react-select'
 
 type propList = {
     employees: Employee[];
@@ -15,11 +16,20 @@ export const FormInv = (props: propList) => {
     const [discount, setDiscount] = useState(0)
     const [totalPrice, setTotalPrice] = useState(0)
 
-    const handleEmployeeSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedEmployee = props.employees.find((employee) => employee.NAME === event.target.value);
-        if (selectedEmployee) {
-            setInvNumber(selectedEmployee.CODE_DEPT + ordNo.toString().padStart(4, '0'))
-            setSelectedEmployee(selectedEmployee);
+    const empOptions: selectOptions[] = props.employees.map(
+        (emp) => ({
+            value: emp.ID,
+            label: emp.NAME
+        })
+    )
+
+    const handleEmployeeSelectChange = (selected: number | undefined) => {
+        if(selected) {
+            const selectedEmployee = props.employees.find((employee) => employee.ID === selected);
+            if (selectedEmployee) {
+                setInvNumber(selectedEmployee.CODE_DEPT + ordNo.toString().padStart(4, '0'))
+                setSelectedEmployee(selectedEmployee);
+            }
         }
     }
 
@@ -91,18 +101,12 @@ export const FormInv = (props: propList) => {
                         </label>
                     </div>
                     <div className="md:w-2/3">
-                        <select 
-                            className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                        <Select 
+                            className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                             id="employeeName"
-                            value={selectedEmployee?.NAME}
-                            onChange={e => handleEmployeeSelectChange(e)}
-                            required
-                        >
-                            <option>Select employee</option>
-                            {props.employees.map((employee) => (
-                                <option key={employee.ID} value={employee.NAME}>{employee.NAME}</option>
-                            ))}
-                        </select>
+                            options={empOptions}
+                            onChange={(e) => handleEmployeeSelectChange(e?.value)}
+                        />
                     </div>
                 </div>
                 <div className="md:flex md:items-center mb-6">
