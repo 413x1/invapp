@@ -1,4 +1,6 @@
 import { Data } from "../types/Types"
+import { formatRupiah } from "../helpers/currency"
+
 type propList = {
     data: Data[];
 }
@@ -22,7 +24,7 @@ export const InvTable = (props: propList) => {
                             Harga
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            Diskon (%)
+                            Diskon
                         </th>
                     </tr>
                 </thead>
@@ -40,10 +42,10 @@ export const InvTable = (props: propList) => {
                                     {dt.invName}
                                 </td>
                                 <td className="px-6 py-4">
-                                    {dt.price}
+                                    {formatRupiah(dt.price)}
                                 </td>
                                 <td className="px-6 py-4">
-                                    {dt.discount}
+                                    {dt.discount} %
                                 </td>
                             </tr>
                         ))

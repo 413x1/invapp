@@ -25,8 +25,10 @@ export const Home = () => {
             )
         }, []
     )
-    
-    console.log(rawData)
+
+    if(error.length > 0) {
+        console.log(error)
+    }
 
     return (
         <div className="container mx-auto pt-20">
